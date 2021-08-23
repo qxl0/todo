@@ -1,22 +1,34 @@
-import React from 'react';
-import TodoItem from './TodoItem';
+import React from "react";
+import TodoItem from "./TodoItem";
+import { connect } from "react-redux";
 
-const TodoList = () => {
-	const todos = [
-		{ id: 1, title: 'todo1', completed: false },
-		{ id: 2, title: 'todo2', completed: false },
-		{ id: 3, title: 'todo3', completed: true },
-		{ id: 4, title: 'todo4', completed: false },
-		{ id: 5, title: 'todo5', completed: false },
-	];
+const TodoList = (props) => {
+  const todos = props.todos;
 
-	return (
-		<ul className='list-group'>
-			{todos.map((todo) => (
-				<TodoItem id={todo.id} title={todo.title} completed={todo.completed} />
-			))}
-		</ul>
-	);
+  return (
+    <ul className="list-group">
+      {todos.map((todo) => (
+        <TodoItem  
+					key={todo.id}
+					id={todo.id} title={todo.task} 
+					completed={todo.completed} />
+      ))}
+    </ul>
+  );
 };
 
-export default TodoList;
+const mapStateToProps = (state) => {
+  return { todos: state.todos };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddTodoClick: (task) => {
+      dispatch({ type: "ADD_TODO", payload: { task: `${task}` } });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+
+//export default TodoList;

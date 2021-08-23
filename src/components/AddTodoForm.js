@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-const AddTodoForm = () => {
+const AddTodoForm = (props) => {
+
 	const [value, setValue] = useState('');
+	const {onAddTodoClick} = props;
 
 	const onSubmit = (event) => {
 		event.preventDefault();
-		console.log('user entered: ' + value);
+		console.log(value);
+		onAddTodoClick(value);
 	};
 
 	return (
@@ -26,4 +30,16 @@ const AddTodoForm = () => {
 	);
 };
 
-export default AddTodoForm;
+const mapStateToProps = (state) => {
+	return {
+		todos: state.todos,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onAddTodoClick: (task) => {
+			dispatch({ type: 'ADD_TODO', payload:  `${task}`  });
+		},
+	};
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AddTodoForm);
