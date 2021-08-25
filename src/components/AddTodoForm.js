@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../redux/todoSlicer';
+import { addTodoAsync } from '../redux/todoSlicer';
 
-const AddTodoForm = (props) => {
+const AddTodoForm = () => {
+	const [userInput, setUserInput] = useState('');
+	const dispatch = useDispatch();
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		dispatch(addTodoAsync({title: userInput}));
+		setUserInput('');
+	}
 
-	const [value, setValue] = useState('');
-	const {onAddTodoClick} = props;
-
-	const onSubmit = (event) => {
-		event.preventDefault();
-		console.log(value);
-		onAddTodoClick(value);
-	};
 
 	return (
-		<form onSubmit={onSubmit} className='form-inline mt-3 mb-3'>
+		<form onSubmit={handleSubmit} className='form-inline mt-3 mb-3'>
 			<label className='sr-only'>Name</label>
 			<input
 				type='text'
 				className='form-control mb-2 mr-sm-2'
 				placeholder='Add todo...'
-				value={value}
-				onChange={(event) => setValue(event.target.value)}
+				value={userInput}
+				onChange={(event) => setUserInput(event.target.value)}
 			></input>
 
 			<button type='submit' className='btn btn-primary mb-2'>

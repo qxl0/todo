@@ -1,12 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux'
+import { toggleTodo, deleteTodo } from '../redux/todoSlicer';
+import { toggleTodoAsync } from '../redux/todoSlicer';
+import { deleteTodoAsync } from '../redux/todoSlicer';
 
-const TodoItem = ({ id, title, completed, onToggleTodoClick, onDeleteTodoClick }) => {
-	const handleCheckClick = () => {
-		onToggleTodoClick(id);
+const TodoItem = ({ id, title, completed }) => {
+	const dispatch = useDispatch();
+	const handleClick = () => { 
+		dispatch(
+			toggleTodoAsync({id: id, completed: !completed})
+		); 
 	};
 	const handleDeleteClick = () => {
-		onDeleteTodoClick(id);
+		dispatch(
+			deleteTodoAsync({id: id})
+		)
 	};
 
 	return (
@@ -14,8 +22,10 @@ const TodoItem = ({ id, title, completed, onToggleTodoClick, onDeleteTodoClick }
 			<div className='d-flex justify-content-between'>
 				<span className='d-flex align-items-center'>
 					<input type='checkbox' className='mr-3' 
-					onChange={handleCheckClick}
-					checked={completed}></input>
+
+						onChange={handleClick}
+						checked={completed}></input>
+
 					{title}
 				</span>
 				<button className='btn btn-danger'
