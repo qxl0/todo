@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { TodoListContext } from './TodoListContext';
 
 const AddTodoForm = () => {
 	const [value, setValue] = useState('');
-
+  const { dispatch } = useContext(TodoListContext);
 	const onSubmit = (event) => {
 		event.preventDefault();
-		console.log('user entered: ' + value);
+		dispatch({type: 'ADD_TODO', payload: value });
+		setValue('');
 	};
 
 	return (

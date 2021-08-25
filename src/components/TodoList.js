@@ -1,22 +1,38 @@
-import React from 'react';
-import TodoItem from './TodoItem';
+import React, { useContext } from "react";
+import TodoItem from "./TodoItem";
+import { TodoListContext } from "./TodoListContext";
+import { VisibilityFilter } from "./Constants";
 
 const TodoList = () => {
-	const todos = [
-		{ id: 1, title: 'todo1', completed: false },
-		{ id: 2, title: 'todo2', completed: false },
-		{ id: 3, title: 'todo3', completed: true },
-		{ id: 4, title: 'todo4', completed: false },
-		{ id: 5, title: 'todo5', completed: false },
-	];
+  const { state } = useContext(TodoListContext);
+	const todos = applyFilter(state); 
+  return (
+    <ul className="list-group">
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          id={todo.id}
+          title={todo.title}
+          completed={todo.completed}
+        />
+      ))}
+    </ul>
+  );
+};
 
-	return (
-		<ul className='list-group'>
-			{todos.map((todo) => (
-				<TodoItem id={todo.id} title={todo.title} completed={todo.completed} />
-			))}
-		</ul>
-	);
+const applyFilter = (state) => {
+	const { todos, visibilityFilter } = state;
+
+	switch (visibilityFilter) {
+		case VisibilityFilter.SHOW_ALL:
+			return todos;
+		case VisibilityFilter.SHOW_COMPLETED:
+			return todos.filter(todo => todo.completed);
+		case VisibilityFilter.SHOW_ACTIVE:
+			return todos.filter(todo => !todo.completed);
+		default:
+			throw new Error('Unknown filter: ' + visibilityFilter);
+	}
 };
 
 export default TodoList;
