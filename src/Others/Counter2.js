@@ -16,8 +16,8 @@ const initialState = { counter: 0};
 
 export default function Counter2() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const divstyle = {fontSize: '20px', padding: '10px' };
-  const buttonstyle = {fontSize: '20px', padding: '10px', margin: '10px' };
+  const divstyle = {fontSize: '20px',fontWeight: 'bold', padding: '10px' };
+  const buttonstyle = {fontSize: '25px', padding: '10px', margin: '10px' };
   const handleIncrement = () => dispatch({ type: 'increment' });
   const handleDecrement = () => dispatch({ type: 'decrement' });
   return (
